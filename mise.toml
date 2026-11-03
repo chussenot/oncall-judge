@@ -1,0 +1,3 @@
+[tools]
+# serving: `transformers serve` deps; torch: needed to load models (CLI is tokenizer-only without it)
+"pipx:transformers" = { version = "latest", extras = ["serving", "torch"] }
