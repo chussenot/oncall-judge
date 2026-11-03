@@ -3,7 +3,7 @@
 # policy that reads the answers. Answered by `transformers serve` at
 # POST /v1/systemone (mise run serve; ~/.config/jud/config.yaml names it):
 #
-#   echo '{"log": "..."}' | jud incident.jud
+#   jud incident.jud < payloads/oom-kubernetes.json
 #
 # Format: https://github.com/chussenot/judgment/blob/main/docs/reference/jud-format.md
 apiVersion: jud/v1
