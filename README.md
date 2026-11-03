@@ -34,8 +34,8 @@ timeout_secs: 60
 
 ```sh
 mise run serve                                        # loads the model, listens on :8000
-echo '{"log": "..."}' | jud incident.jud              # one verdict per question
-mise run classify payloads/oom-kubernetes.json        # the raw chat endpoint, prints the JSON label
+jud incident.jud < payloads/oom-kubernetes.json       # one verdict per question
+mise run classify payloads/oom-kubernetes.json        # the same log on the chat endpoint, prints the JSON label
 ```
 <img width="1904" height="504" alt="image" src="https://github.com/user-attachments/assets/53560200-1238-48fd-ac7c-0afde65a78e6" />
 
@@ -52,8 +52,8 @@ A verdict, for the TLS case under `incident-cases.jud`:
 Below the confidence bar a verdict is `deferred` for a person to read.
 
 The server speaks two wires. `POST /v1/chat/completions` generates the JSON
-label the model was trained to write; `payloads/` holds one ready request
-per sample. `POST /v1/systemone` is what `jud` calls: no text is generated,
+label the model was trained to write; `mise run classify` wraps a log in the
+training prompt it reads from `decision.json`. `POST /v1/systemone` is what `jud` calls: no text is generated,
 each allowed answer is one token and its probability is read from a single
 forward pass.
 
@@ -66,7 +66,7 @@ forward pass.
 | `incident.jud` | the rubric: a `choice` over the twelve incident types, a `score` over P4 to P1, and the tuned gates |
 | `incident-cases.jud` | eight labelled log excerpts, one per severity and eight of the twelve types |
 | `recordings/` | the model's recorded answers to those cases, so `jud eval` and `jud tune` run with no server |
-| `payloads/` | chat-completions requests for `mise run classify` |
+| `payloads/` | one `{"log": "..."}` per sample: the logs to judge, with no prompt in them. `jud` reads one on stdin, `mise run classify` wraps one in the chat prompt |
 
 ## Why decision.json
 

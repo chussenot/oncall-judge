@@ -1,16 +1,3 @@
 {
-  "model": "rachitst/oncall-ai-incident-classifier",
-  "stream": false,
-  "max_tokens": 48,
-  "temperature": 0,
-  "messages": [
-    {
-      "role": "system",
-      "content": "You are an SRE assistant. Classify the production log excerpt into exactly one incident_type from this list: database_connection_exhausted, out_of_memory, disk_space_full, upstream_gateway_error, tls_certificate_expired, kubernetes_crashloop, application_exception, dns_resolution_failure, rate_limit_exceeded, authentication_failure, high_latency_timeout, deployment_failure. Then assign a severity: P1 (production outage, all/most users, core flow down, data at risk), P2 (production degraded for many users, partial impact), P3 (limited impact, single host, non-production, self-recovered), P4 (informational, single occurrence in dev, within baseline). Answer with JSON only: {\"incident_type\": \"...\", \"severity\": \"P1|P2|P3|P4\"}"
-    },
-    {
-      "role": "user",
-      "content": "TASK: classify\nLOG:\n2026-10-20T14:02:11.000Z WARN  systemd-journald[412] [staging] host build-02: /var is 100% full\n2026-10-20T14:02:12.000Z ERROR ci-runner build-02: write /var/lib/runner/cache/layer.tar: no space left on device\n2026-10-20T14:02:13.000Z INFO  ci-runner build-02: queued job 8812 retried on build-03\n2026-10-20T14:02:15.000Z ERROR dockerd[901] build-02: failed to write layer: ENOSPC\n2026-10-20T14:02:30.000Z WARN  monitor [staging] build-02 disk full, 1 of 4 runners offline, no user impact"
-    }
-  ]
+  "log": "2026-10-20T14:02:11.000Z WARN  systemd-journald[412] [staging] host build-02: /var is 100% full\n2026-10-20T14:02:12.000Z ERROR ci-runner build-02: write /var/lib/runner/cache/layer.tar: no space left on device\n2026-10-20T14:02:13.000Z INFO  ci-runner build-02: queued job 8812 retried on build-03\n2026-10-20T14:02:15.000Z ERROR dockerd[901] build-02: failed to write layer: ENOSPC\n2026-10-20T14:02:30.000Z WARN  monitor [staging] build-02 disk full, 1 of 4 runners offline, no user impact"
 }

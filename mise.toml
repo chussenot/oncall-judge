@@ -12,6 +12,13 @@ description = "Serve the incident classifier, OpenAI-compatible API on http://lo
 run = "transformers serve rachitst/oncall-ai-incident-classifier --decision-config decision.json"
 
 [tasks.classify]
-description = "POST a payload from payloads/ to the running server and print the label"
+description = "Wrap a log from payloads/ in the training prompt, POST it to the chat endpoint and print the label"
 usage = 'arg "[payload]" default="payloads/db-connection-exhausted.json"'
-run = 'curl -sf localhost:8000/v1/chat/completions -H "Content-Type: application/json" -d @"$usage_payload" | jaq -r ".choices[0].message.content"'
+# the system prompt is the one decision.json renders for System One, so both wires ask the model the way it was trained
+run = '''
+prompt=$(jaq -r '.chat_template | split("<|im_start|>system\n")[1] | split("<|im_end|>")[0]' decision.json)
+jaq --arg prompt "$prompt" '{model: "rachitst/oncall-ai-incident-classifier", stream: false, max_tokens: 48, temperature: 0,
+  messages: [{role: "system", content: $prompt}, {role: "user", content: "TASK: classify\nLOG:\n\(.log)"}]}' "$usage_payload" \
+| curl -sf localhost:8000/v1/chat/completions -H "Content-Type: application/json" -d @- \
+| jaq -r .choices[0].message.content
+'''
