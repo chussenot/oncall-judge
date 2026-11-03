@@ -1,0 +1,16 @@
+{
+  "model": "rachitst/oncall-ai-incident-classifier",
+  "stream": false,
+  "max_tokens": 48,
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an SRE assistant. Classify the production log excerpt into exactly one incident_type from this list: database_connection_exhausted, out_of_memory, disk_space_full, upstream_gateway_error, tls_certificate_expired, kubernetes_crashloop, application_exception, dns_resolution_failure, rate_limit_exceeded, authentication_failure, high_latency_timeout, deployment_failure. Then assign a severity: P1 (production outage, all/most users, core flow down, data at risk), P2 (production degraded for many users, partial impact), P3 (limited impact, single host, non-production, self-recovered), P4 (informational, single occurrence in dev, within baseline). Answer with JSON only: {\"incident_type\": \"...\", \"severity\": \"P1|P2|P3|P4\"}"
+    },
+    {
+      "role": "user",
+      "content": "TASK: classify\nLOG:\n2026-11-01T00:00:03.000Z ERROR nginx[1842] [prod] SSL_do_handshake() failed (SSL: error:0A000086:SSL routines::certificate verify failed: certificate has expired)\n2026-11-01T00:00:03.000Z INFO  nginx[1842] 10.4.1.22 - - \"GET /healthz HTTP/1.1\" 200 2\n2026-11-01T00:00:05.000Z ERROR api-gateway x509: certificate has expired or is not yet valid: current time 2026-11-01T00:00:05Z is after 2026-10-31T23:59:59Z\n2026-11-01T00:00:09.000Z ERROR mobile-bff upstream api.example.com: TLS handshake failed, 100% of requests failing\n2026-11-01T00:00:20.000Z CRIT  monitor [prod] www.example.com DOWN for all users, login and checkout unavailable"
+    }
+  ]
+}

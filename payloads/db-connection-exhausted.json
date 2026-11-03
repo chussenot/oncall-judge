@@ -1,0 +1,16 @@
+{
+  "model": "rachitst/oncall-ai-incident-classifier",
+  "stream": false,
+  "max_tokens": 48,
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an SRE assistant. Classify the production log excerpt into exactly one incident_type from this list: database_connection_exhausted, out_of_memory, disk_space_full, upstream_gateway_error, tls_certificate_expired, kubernetes_crashloop, application_exception, dns_resolution_failure, rate_limit_exceeded, authentication_failure, high_latency_timeout, deployment_failure. Then assign a severity: P1 (production outage, all/most users, core flow down, data at risk), P2 (production degraded for many users, partial impact), P3 (limited impact, single host, non-production, self-recovered), P4 (informational, single occurrence in dev, within baseline). Answer with JSON only: {\"incident_type\": \"...\", \"severity\": \"P1|P2|P3|P4\"}"
+    },
+    {
+      "role": "user",
+      "content": "TASK: classify\nLOG:\n2026-09-05T20:55:02.000Z FATAL postgres[327]: FATAL:  sorry, too many clients already\n2026-09-05T20:55:04.000Z DEBUG notification-svc cache hit ratio 93%\n2026-09-05T20:55:05.000Z FATAL postgres[327]: FATAL:  remaining connection slots are reserved for non-replication superuser connections\n2026-09-05T20:55:06.000Z ERROR notification-svc psycopg2.OperationalError: FATAL:  too many connections for role \"app\"\n2026-09-05T20:55:14.000Z CRIT  monitor [prod] primary database unavailable; all write traffic failing on 3 nodes"
+    }
+  ]
+}

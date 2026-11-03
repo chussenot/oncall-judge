@@ -1,3 +1,12 @@
 [tools]
 # serving: `transformers serve` deps; torch: needed to load models (CLI is tokenizer-only without it)
 "pipx:transformers" = { version = "latest", extras = ["serving", "torch"] }
+
+[tasks.serve]
+description = "Serve the incident classifier, OpenAI-compatible API on http://localhost:8000"
+run = "transformers serve rachitst/oncall-ai-incident-classifier"
+
+[tasks.classify]
+description = "POST a payload from payloads/ to the running server and print the label"
+usage = 'arg "[payload]" default="payloads/db-connection-exhausted.json"'
+run = 'curl -sf localhost:8000/v1/chat/completions -H "Content-Type: application/json" -d @"$usage_payload" | jaq -r ".choices[0].message.content"'
