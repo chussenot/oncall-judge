@@ -37,6 +37,7 @@ mise run serve                                        # loads the model, listens
 echo '{"log": "..."}' | jud incident.jud              # one verdict per question
 mise run classify payloads/oom-kubernetes.json        # the raw chat endpoint, prints the JSON label
 ```
+<img width="1904" height="504" alt="image" src="https://github.com/user-attachments/assets/53560200-1238-48fd-ac7c-0afde65a78e6" />
 
 A verdict, for the TLS case under `incident-cases.jud`:
 
