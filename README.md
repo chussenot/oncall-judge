@@ -66,7 +66,7 @@ forward pass.
 | `incident.jud` | the rubric: a `choice` over the twelve incident types, a `score` over P4 to P1, and the tuned gates |
 | `incident-cases.jud` | eight labelled log excerpts, one per severity and eight of the twelve types |
 | `recordings/` | the model's recorded answers to those cases, so `jud eval` and `jud tune` run with no server |
-| `payloads/` | one `{"log": "..."}` per sample: the logs to judge, with no prompt in them. `jud` reads one on stdin, `mise run classify` wraps one in the chat prompt |
+| `payloads/` | one `{"log": "..."}` per case in `incident-cases.jud`: the logs to judge, with no prompt in them. `jud` reads one on stdin, `mise run classify` wraps one in the chat prompt |
 
 ## Why decision.json
 

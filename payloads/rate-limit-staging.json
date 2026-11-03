@@ -1,0 +1,3 @@
+{
+  "log": "2026-10-22T09:12:44.000Z WARN  search-svc [staging] upstream elastic: 429 Too Many Requests, retry after 2s\n2026-10-22T09:12:45.000Z INFO  search-svc request_id=4f1a cache miss\n2026-10-22T09:12:46.000Z WARN  search-svc [staging] rate limit exceeded for key stg-search (1000 req/min), backing off\n2026-10-22T09:12:50.000Z INFO  search-svc retry succeeded after 3 attempts\n2026-10-22T09:13:10.000Z INFO  monitor [staging] search throttled for 40s, recovered, no production traffic affected"
+}

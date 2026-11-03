@@ -1,0 +1,3 @@
+{
+  "log": "2026-10-30T03:17:08.000Z ERROR orders-api [prod] dial tcp: lookup db-primary.internal on 10.0.0.2:53: server misbehaving\n2026-10-30T03:17:09.000Z ERROR orders-api getaddrinfo ENOTFOUND cache.internal\n2026-10-30T03:17:10.000Z ERROR coredns [prod] SERVFAIL internal. A: read udp 10.0.0.2:53->10.0.0.1:53: i/o timeout\n2026-10-30T03:17:12.000Z ERROR auth-svc [prod] lookup sso.internal: NXDOMAIN\n2026-10-30T03:17:40.000Z CRIT  monitor [prod] internal DNS down on all 3 resolvers, every service failing, site unavailable for all users"
+}

@@ -1,0 +1,3 @@
+{
+  "log": "2026-10-28T16:05:01.000Z INFO  argocd [dev] syncing app inventory-svc to rev 9c1e2f\n2026-10-28T16:05:20.000Z ERROR argocd [dev] sync failed: Deployment inventory-svc rollout exceeded progress deadline\n2026-10-28T16:05:21.000Z ERROR kubelet node-dev-1 image pull failed: registry.internal/inventory-svc:9c1e2f not found\n2026-10-28T16:05:30.000Z INFO  argocd [dev] rolled back inventory-svc to rev 7b0a44, healthy\n2026-10-28T16:05:35.000Z INFO  monitor [dev] single failed rollout in dev, previous version serving, nobody affected"
+}
