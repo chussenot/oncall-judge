@@ -1,0 +1,49 @@
+# Recorded answer for case `crashloop-prod`; found by fingerprint.
+apiVersion: jud/v1
+kind: Recording
+metadata:
+  name: crashloop-prod
+  minor: 4
+spec:
+  elapsed_ms: 4326
+  fingerprint: sha256:7ee56534614f2e99733efa50189e92bef19991ee881a7e8257ab4bceeb325056
+  recorded_at: "2026-11-03T12:49:34Z"
+  response:
+    answers:
+      incident_type:
+        choice: kubernetes_crashloop
+        confidence: 1.0
+        probabilities:
+          application_exception: 2.202016520513883e-11
+          authentication_failure: 2.4374099960589035e-11
+          database_connection_exhausted: 1.4026325934057837e-10
+          deployment_failure: 1.50797219156118e-9
+          disk_space_full: 5.101404187968228e-9
+          dns_resolution_failure: 5.346225684377259e-9
+          high_latency_timeout: 5.89290144459298e-11
+          kubernetes_crashloop: 1.0
+          out_of_memory: 1.82553572952715e-11
+          rate_limit_exceeded: 2.0568248493280095e-10
+          tls_certificate_expired: 1.735665389190899e-9
+          upstream_gateway_error: 4.4830833489939437e-11
+        type: choice
+      severity:
+        confidence: 0.9326732049248676
+        legend:
+          "0": P4
+          "1": P3
+          "2": P2
+          "3": P1
+        probabilities:
+          "0": 0.000011219991392863449
+          "1": 0.0624859556555748
+          "2": 0.9326843619346619
+          "3": 0.00481839943677187
+        score: 1.9423098778352141
+        type: score
+    model: rachitst/oncall-ai-incident-classifier
+    usage:
+      input_tokens: 862
+      output_tokens: 0
+  rubric: oncall-incident
+  server: http://localhost:8000

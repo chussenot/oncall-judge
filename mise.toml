@@ -1,10 +1,15 @@
 [tools]
 # serving: `transformers serve` deps; torch: needed to load models (CLI is tokenizer-only without it)
 "pipx:transformers" = { version = "latest", extras = ["serving", "torch"] }
+# jud: typed judgments from a .jud rubric (https://github.com/chussenot/judgment)
+"github:chussenot/judgment" = "latest"
 
 [tasks.serve]
 description = "Serve the incident classifier, OpenAI-compatible API on http://localhost:8000"
-run = "transformers serve rachitst/oncall-ai-incident-classifier"
+# decision.json shapes POST /v1/systemone (what jud calls): the chat template renders each question in the
+# model's training format and the labels are the first token of each answer, positional for incident.jud's
+# option order. DecisionConfig forbids extra keys, so this comment lives here.
+run = "transformers serve rachitst/oncall-ai-incident-classifier --decision-config decision.json"
 
 [tasks.classify]
 description = "POST a payload from payloads/ to the running server and print the label"

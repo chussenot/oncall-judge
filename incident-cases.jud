@@ -1,0 +1,90 @@
+# Labelled log excerpts for incident.jud, one per severity and eight of the
+# twelve incident types. Synthetic, in the style of the model's training data.
+#
+#   jud check incident.jud incident-cases.jud
+#   jud record --out recordings incident.jud incident-cases.jud   # asks the server once
+#   jud eval --replay recordings incident.jud incident-cases.jud  # grades, no server
+#   jud tune --replay recordings incident.jud incident-cases.jud  # proposes the bars
+apiVersion: jud/v1
+kind: Cases
+metadata:
+  name: oncall-incident-cases
+  minor: 3
+  description: Eight log excerpts labelled with incident type and severity.
+spec:
+  rubric: oncall-incident
+  cases:
+    - id: db-connection-exhausted
+      state:
+        log: |-
+          2026-09-05T20:55:02.000Z FATAL postgres[327]: FATAL:  sorry, too many clients already
+          2026-09-05T20:55:04.000Z DEBUG notification-svc cache hit ratio 93%
+          2026-09-05T20:55:05.000Z FATAL postgres[327]: FATAL:  remaining connection slots are reserved for non-replication superuser connections
+          2026-09-05T20:55:06.000Z ERROR notification-svc psycopg2.OperationalError: FATAL:  too many connections for role "app"
+          2026-09-05T20:55:14.000Z CRIT  monitor [prod] primary database unavailable; all write traffic failing on 3 nodes
+      expect: {incident_type: database_connection_exhausted, severity: P1}
+      note: from the model card's held-out test split
+    - id: oom-kubernetes
+      state:
+        log: |-
+          2026-10-12T08:14:21.000Z WARN  kubelet node-7 [prod] container checkout-api in pod checkout-api-6d9f-x2k1 OOMKilled (limit 512Mi)
+          2026-10-12T08:14:22.000Z INFO  kube-scheduler scheduled pod checkout-api-6d9f-x2k1 on node-7
+          2026-10-12T08:14:40.000Z WARN  kubelet node-3 [prod] container checkout-api in pod checkout-api-6d9f-p8qz OOMKilled (limit 512Mi)
+          2026-10-12T08:15:02.000Z ERROR checkout-api java.lang.OutOfMemoryError: Java heap space
+          2026-10-12T08:15:30.000Z WARN  monitor [prod] checkout error rate 12% (2 of 10 pods restarting), checkout still available
+      expect: {incident_type: out_of_memory, severity: P2}
+    - id: tls-cert-expired
+      state:
+        log: |-
+          2026-11-01T00:00:03.000Z ERROR nginx[1842] [prod] SSL_do_handshake() failed (SSL: error:0A000086:SSL routines::certificate verify failed: certificate has expired)
+          2026-11-01T00:00:03.000Z INFO  nginx[1842] 10.4.1.22 - - "GET /healthz HTTP/1.1" 200 2
+          2026-11-01T00:00:05.000Z ERROR api-gateway x509: certificate has expired or is not yet valid: current time 2026-11-01T00:00:05Z is after 2026-10-31T23:59:59Z
+          2026-11-01T00:00:09.000Z ERROR mobile-bff upstream api.example.com: TLS handshake failed, 100% of requests failing
+          2026-11-01T00:00:20.000Z CRIT  monitor [prod] www.example.com DOWN for all users, login and checkout unavailable
+      expect: {incident_type: tls_certificate_expired, severity: P1}
+    - id: disk-full-staging
+      state:
+        log: |-
+          2026-10-20T14:02:11.000Z WARN  systemd-journald[412] [staging] host build-02: /var is 100% full
+          2026-10-20T14:02:12.000Z ERROR ci-runner build-02: write /var/lib/runner/cache/layer.tar: no space left on device
+          2026-10-20T14:02:13.000Z INFO  ci-runner build-02: queued job 8812 retried on build-03
+          2026-10-20T14:02:15.000Z ERROR dockerd[901] build-02: failed to write layer: ENOSPC
+          2026-10-20T14:02:30.000Z WARN  monitor [staging] build-02 disk full, 1 of 4 runners offline, no user impact
+      expect: {incident_type: disk_space_full, severity: P3}
+      note: staging, one host, no user impact; the chat endpoint answers P2 here
+    - id: crashloop-prod
+      state:
+        log: |-
+          2026-10-15T11:40:02.000Z WARN  kubelet node-2 [prod] Back-off restarting failed container payments in pod payments-7c4b-k9d2
+          2026-10-15T11:40:05.000Z ERROR payments panic: runtime error: invalid memory address or nil pointer dereference
+          2026-10-15T11:40:07.000Z INFO  kube-scheduler scheduled pod payments-7c4b-k9d2 on node-2
+          2026-10-15T11:41:30.000Z WARN  kubelet node-5 [prod] pod payments-7c4b-m3xz CrashLoopBackOff, restart count 9
+          2026-10-15T11:42:00.000Z ERROR monitor [prod] payments 4 of 6 pods not ready, card payments failing for 35% of users
+      expect: {incident_type: kubernetes_crashloop, severity: P2}
+    - id: rate-limit-staging
+      state:
+        log: |-
+          2026-10-22T09:12:44.000Z WARN  search-svc [staging] upstream elastic: 429 Too Many Requests, retry after 2s
+          2026-10-22T09:12:45.000Z INFO  search-svc request_id=4f1a cache miss
+          2026-10-22T09:12:46.000Z WARN  search-svc [staging] rate limit exceeded for key stg-search (1000 req/min), backing off
+          2026-10-22T09:12:50.000Z INFO  search-svc retry succeeded after 3 attempts
+          2026-10-22T09:13:10.000Z INFO  monitor [staging] search throttled for 40s, recovered, no production traffic affected
+      expect: {incident_type: rate_limit_exceeded, severity: P3}
+    - id: dns-prod-outage
+      state:
+        log: |-
+          2026-10-30T03:17:08.000Z ERROR orders-api [prod] dial tcp: lookup db-primary.internal on 10.0.0.2:53: server misbehaving
+          2026-10-30T03:17:09.000Z ERROR orders-api getaddrinfo ENOTFOUND cache.internal
+          2026-10-30T03:17:10.000Z ERROR coredns [prod] SERVFAIL internal. A: read udp 10.0.0.2:53->10.0.0.1:53: i/o timeout
+          2026-10-30T03:17:12.000Z ERROR auth-svc [prod] lookup sso.internal: NXDOMAIN
+          2026-10-30T03:17:40.000Z CRIT  monitor [prod] internal DNS down on all 3 resolvers, every service failing, site unavailable for all users
+      expect: {incident_type: dns_resolution_failure, severity: P1}
+    - id: deploy-failed-dev
+      state:
+        log: |-
+          2026-10-28T16:05:01.000Z INFO  argocd [dev] syncing app inventory-svc to rev 9c1e2f
+          2026-10-28T16:05:20.000Z ERROR argocd [dev] sync failed: Deployment inventory-svc rollout exceeded progress deadline
+          2026-10-28T16:05:21.000Z ERROR kubelet node-dev-1 image pull failed: registry.internal/inventory-svc:9c1e2f not found
+          2026-10-28T16:05:30.000Z INFO  argocd [dev] rolled back inventory-svc to rev 7b0a44, healthy
+          2026-10-28T16:05:35.000Z INFO  monitor [dev] single failed rollout in dev, previous version serving, nobody affected
+      expect: {incident_type: deployment_failure, severity: P4}

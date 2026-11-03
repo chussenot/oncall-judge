@@ -1,0 +1,49 @@
+# Recorded answer for case `tls-cert-expired`; found by fingerprint.
+apiVersion: jud/v1
+kind: Recording
+metadata:
+  name: tls-cert-expired
+  minor: 4
+spec:
+  elapsed_ms: 4897
+  fingerprint: sha256:586e445b5a2c1291ee1e70407bba00960121ad168a0890231099e3815d4f4354
+  recorded_at: "2026-11-03T12:49:25Z"
+  response:
+    answers:
+      incident_type:
+        choice: tls_certificate_expired
+        confidence: 0.9999988295815208
+        probabilities:
+          application_exception: 2.25897772709871e-10
+          authentication_failure: 5.780642187147578e-9
+          database_connection_exhausted: 2.3125477921492887e-10
+          deployment_failure: 1.21862714363985e-10
+          disk_space_full: 7.868047879888707e-11
+          dns_resolution_failure: 1.051149638442439e-6
+          high_latency_timeout: 1.7555986178696692e-11
+          kubernetes_crashloop: 9.910325893258687e-9
+          out_of_memory: 3.430076318464148e-12
+          rate_limit_exceeded: 1.4268656243522637e-13
+          tls_certificate_expired: 0.999998927116394
+          upstream_gateway_error: 2.25897772709871e-10
+        type: choice
+      severity:
+        confidence: 0.9999991563784727
+        legend:
+          "0": P4
+          "1": P3
+          "2": P2
+          "3": P1
+        probabilities:
+          "0": 1.079966427397494e-8
+          "1": 1.1079040262984563e-7
+          "2": 5.896417292206024e-7
+          "3": 0.9999992847442627
+        score: 2.999999144306649
+        type: score
+    model: rachitst/oncall-ai-incident-classifier
+    usage:
+      input_tokens: 992
+      output_tokens: 0
+  rubric: oncall-incident
+  server: http://localhost:8000

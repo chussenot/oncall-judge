@@ -1,0 +1,49 @@
+# Recorded answer for case `db-connection-exhausted`; found by fingerprint.
+apiVersion: jud/v1
+kind: Recording
+metadata:
+  name: db-connection-exhausted
+  minor: 4
+spec:
+  elapsed_ms: 4606
+  fingerprint: sha256:b8aea446b294ebbb578a57a07cab239c4d73cc5d488f704cc3f6c387ec1dc4c5
+  recorded_at: "2026-11-03T12:49:16Z"
+  response:
+    answers:
+      incident_type:
+        choice: database_connection_exhausted
+        confidence: 0.9994470422918146
+        probabilities:
+          application_exception: 4.782691576110665e-6
+          authentication_failure: 2.1850770792752883e-7
+          database_connection_exhausted: 0.9994931221008301
+          deployment_failure: 0.00008746630192035809
+          disk_space_full: 3.3128737868537428e-6
+          dns_resolution_failure: 0.00025707774329930544
+          high_latency_timeout: 0.0001376038126181811
+          kubernetes_crashloop: 0.000015681844161008485
+          out_of_memory: 1.8836541926248174e-7
+          rate_limit_exceeded: 3.204204119811038e-7
+          tls_certificate_expired: 5.700114158457836e-8
+          upstream_gateway_error: 2.0969547875893113e-8
+        type: choice
+      severity:
+        confidence: 0.9999986063140662
+        legend:
+          "0": P4
+          "1": P3
+          "2": P2
+          "3": P1
+        probabilities:
+          "0": 1.3759124506407261e-8
+          "1": 3.205825578334043e-7
+          "2": 7.112434445843974e-7
+          "3": 0.999998927116394
+        score: 2.999998524418629
+        type: score
+    model: rachitst/oncall-ai-incident-classifier
+    usage:
+      input_tokens: 814
+      output_tokens: 0
+  rubric: oncall-incident
+  server: http://localhost:8000

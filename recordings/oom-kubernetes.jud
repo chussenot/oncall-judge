@@ -1,0 +1,49 @@
+# Recorded answer for case `oom-kubernetes`; found by fingerprint.
+apiVersion: jud/v1
+kind: Recording
+metadata:
+  name: oom-kubernetes
+  minor: 4
+spec:
+  elapsed_ms: 4443
+  fingerprint: sha256:cb8fd8b72c0e0562e21853ec2c5e799f1348ec7ed357398d73379f53fb3ff45f
+  recorded_at: "2026-11-03T12:49:20Z"
+  response:
+    answers:
+      incident_type:
+        choice: out_of_memory
+        confidence: 0.9999970089305531
+        probabilities:
+          application_exception: 2.6465662994468175e-9
+          authentication_failure: 7.220114089934171e-11
+          database_connection_exhausted: 9.382892685039224e-9
+          deployment_failure: 2.466871151796113e-9
+          disk_space_full: 2.1568155261775246e-6
+          dns_resolution_failure: 7.946433511207829e-10
+          high_latency_timeout: 5.989260216665571e-7
+          kubernetes_crashloop: 1.1768784169419177e-8
+          out_of_memory: 0.9999972581863403
+          rate_limit_exceeded: 2.5643742337932984e-11
+          tls_certificate_expired: 1.4272892763511624e-11
+          upstream_gateway_error: 3.903156686746456e-10
+        type: choice
+      severity:
+        confidence: 0.9999543274584415
+        legend:
+          "0": P4
+          "1": P3
+          "2": P2
+          "3": P1
+        probabilities:
+          "0": 7.48037276565583e-9
+          "1": 5.594113645202015e-6
+          "2": 0.999954342842102
+          "3": 0.00004006346716778353
+        score: 2.0000344701993527
+        type: score
+    model: rachitst/oncall-ai-incident-classifier
+    usage:
+      input_tokens: 894
+      output_tokens: 0
+  rubric: oncall-incident
+  server: http://localhost:8000

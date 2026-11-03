@@ -1,0 +1,69 @@
+# The decision rachitst/oncall-ai-incident-classifier was trained for, as a
+# jud rubric: the two questions a request sends about a log excerpt, and the
+# policy that reads the answers. Answered by `transformers serve` at
+# POST /v1/systemone (mise run serve; ~/.config/jud/config.yaml names it):
+#
+#   echo '{"log": "..."}' | jud incident.jud
+#
+# Format: https://github.com/chussenot/judgment/blob/main/docs/reference/jud-format.md
+apiVersion: jud/v1
+kind: Rubric
+metadata:
+  name: oncall-incident
+  minor: 3
+  version: 1
+  description: >-
+    Classify a production log excerpt: which kind of incident it is and how
+    severe, from the blast radius the log itself states.
+spec:
+  questions:
+    incident_type:
+      type: choice
+      instructions: Which incident does `log` describe?
+      criteria:
+        database_connection_exhausted: the database refuses connections; pool or connection slots full
+        out_of_memory: a process or container killed or failing for lack of memory (OOMKilled, OutOfMemoryError)
+        disk_space_full: a volume at 100%, writes failing with no space left on device
+        upstream_gateway_error: a proxy or gateway answering 502, 503 or 504 because its upstream fails
+        tls_certificate_expired: TLS handshakes failing on an expired or invalid certificate
+        kubernetes_crashloop: pods restarting again and again, CrashLoopBackOff
+        application_exception: an unhandled exception or stack trace in application code
+        dns_resolution_failure: hostnames that do not resolve (NXDOMAIN, SERVFAIL, resolver timeouts)
+        rate_limit_exceeded: requests rejected with 429 or throttled past a quota
+        authentication_failure: logins, tokens or credentials rejected (401, expired secrets)
+        high_latency_timeout: slow responses, deadlines exceeded, request timeouts
+        deployment_failure: a rollout, migration or release that failed or was rolled back
+    severity:
+      type: score
+      instructions: >-
+        How severe is the incident in `log`? Judge by the blast radius the log
+        states (environment, error rate, hosts or pods affected, user impact).
+        P4: informational, a single occurrence in dev, within baseline.
+        P3: limited impact, a single host, non-production, or self-recovered.
+        P2: production degraded for many users, partial impact.
+        P1: production outage, all or most users, a core flow down, or data at risk.
+      criteria: [P4, P3, P2, P1]   # lowest first
+
+  # Gates: where an answer becomes an action. The bars are what `jud tune`
+  # read off the recordings under recordings/ (8 cases: a guess with a number
+  # on it, as tune warns; re-tune when the cases grow).
+  policy:
+    incident_type:
+      confidence: 0.0
+      note: lowest bar at 95% accuracy; covers 8 of 8 labelled cases, all answered at confidence 1.00
+    severity:
+      confidence: 0.9
+      level_at_least: P2
+      note: >-
+        lowest bar at 95% accuracy; covers 6 of 8 labelled cases, deferring
+        the two borderline ones. P2 and up pages the on-call: a policy choice,
+        where tune proposed P1 by best F1.
+
+  tuning:
+    cases: sha256:6d67e1672575d678fa1f86f9620ad9c8e28873a8b88d0834c00ea3bb627eaa54
+    model: rachitst/oncall-ai-incident-classifier
+    server: http://localhost:8000
+    tuned_at: "2026-11-03T12:50:31Z"
+    labelled:
+      incident_type: 8
+      severity: 8

@@ -1,0 +1,49 @@
+# Recorded answer for case `dns-prod-outage`; found by fingerprint.
+apiVersion: jud/v1
+kind: Recording
+metadata:
+  name: dns-prod-outage
+  minor: 4
+spec:
+  elapsed_ms: 4735
+  fingerprint: sha256:9d71d153df4718bcdf2ce33830090948c86db9237dbc886e13d0e6f933a961aa
+  recorded_at: "2026-11-03T12:49:42Z"
+  response:
+    answers:
+      incident_type:
+        choice: dns_resolution_failure
+        confidence: 0.999999609860507
+        probabilities:
+          application_exception: 2.330687032259249e-10
+          authentication_failure: 4.432175071400479e-9
+          database_connection_exhausted: 2.358864570339847e-8
+          deployment_failure: 5.2333700040207987e-8
+          disk_space_full: 1.7704262234019552e-7
+          dns_resolution_failure: 0.9999996423721313
+          high_latency_timeout: 1.3307803747864e-9
+          kubernetes_crashloop: 1.1341775518758368e-7
+          out_of_memory: 3.397251924219802e-11
+          rate_limit_exceeded: 1.5770217076660487e-10
+          tls_certificate_expired: 9.833209801968223e-9
+          upstream_gateway_error: 6.729902746194227e-11
+        type: choice
+      severity:
+        confidence: 0.9999988552004355
+        legend:
+          "0": P4
+          "1": P3
+          "2": P2
+          "3": P1
+        probabilities:
+          "0": 1.1055768744938632e-8
+          "1": 1.4005216542045673e-7
+          "2": 8.315279274029308e-7
+          "3": 0.9999990463256836
+        score: 2.999998942085071
+        type: score
+    model: rachitst/oncall-ai-incident-classifier
+    usage:
+      input_tokens: 878
+      output_tokens: 0
+  rubric: oncall-incident
+  server: http://localhost:8000

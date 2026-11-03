@@ -1,0 +1,49 @@
+# Recorded answer for case `disk-full-staging`; found by fingerprint.
+apiVersion: jud/v1
+kind: Recording
+metadata:
+  name: disk-full-staging
+  minor: 4
+spec:
+  elapsed_ms: 4251
+  fingerprint: sha256:11b7bd199b5afbc881a9b3cb6e574ad8a16584c5f667f920529f07ec35b9ea18
+  recorded_at: "2026-11-03T12:49:29Z"
+  response:
+    answers:
+      incident_type:
+        choice: disk_space_full
+        confidence: 0.9999557841907848
+        probabilities:
+          application_exception: 1.0753922058404086e-10
+          authentication_failure: 3.651153598210888e-12
+          database_connection_exhausted: 1.4676759008125373e-7
+          deployment_failure: 8.69569163342021e-8
+          disk_space_full: 0.9999594688415527
+          dns_resolution_failure: 6.747823590558255e-6
+          high_latency_timeout: 0.000027968952053925022
+          kubernetes_crashloop: 2.6520362794713037e-8
+          out_of_memory: 5.507412879524054e-6
+          rate_limit_exceeded: 6.471823771336815e-11
+          tls_certificate_expired: 3.546267099419076e-11
+          upstream_gateway_error: 1.1652233622427843e-9
+        type: choice
+      severity:
+        confidence: 0.8848276869957772
+        legend:
+          "0": P4
+          "1": P3
+          "2": P2
+          "3": P1
+        probabilities:
+          "0": 3.5101265893899836e-6
+          "1": 0.11426517367362976
+          "2": 0.8848311305046082
+          "3": 0.0009001190774142742
+        score: 1.886627791915089
+        type: score
+    model: rachitst/oncall-ai-incident-classifier
+    usage:
+      input_tokens: 872
+      output_tokens: 0
+  rubric: oncall-incident
+  server: http://localhost:8000

@@ -1,0 +1,25 @@
+{
+  "labels": {
+    "choice": [
+      "database",
+      "out",
+      "disk",
+      "up",
+      "tls",
+      "k",
+      "application",
+      "dns",
+      "rate",
+      "authentication",
+      "high",
+      "deployment"
+    ],
+    "score": [
+      "4",
+      "3",
+      "2",
+      "1"
+    ]
+  },
+  "chat_template": "<|im_start|>system\nYou are an SRE assistant. Classify the production log excerpt into exactly one incident_type from this list: database_connection_exhausted, out_of_memory, disk_space_full, upstream_gateway_error, tls_certificate_expired, kubernetes_crashloop, application_exception, dns_resolution_failure, rate_limit_exceeded, authentication_failure, high_latency_timeout, deployment_failure. Then assign a severity: P1 (production outage, all/most users, core flow down, data at risk), P2 (production degraded for many users, partial impact), P3 (limited impact, single host, non-production, self-recovered), P4 (informational, single occurrence in dev, within baseline). Answer with JSON only: {\"incident_type\": \"...\", \"severity\": \"P1|P2|P3|P4\"}<|im_end|>\n<|im_start|>user\nTASK: classify\nLOG:\n{{ state.log if state is mapping and 'log' in state else state }}<|im_end|>\n<|im_start|>assistant\n{% if question.type == 'score' %}{\"severity\": \"P{% else %}{\"incident_type\": \"{% endif %}"
+}

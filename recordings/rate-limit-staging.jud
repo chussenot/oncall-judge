@@ -1,0 +1,49 @@
+# Recorded answer for case `rate-limit-staging`; found by fingerprint.
+apiVersion: jud/v1
+kind: Recording
+metadata:
+  name: rate-limit-staging
+  minor: 4
+spec:
+  elapsed_ms: 4067
+  fingerprint: sha256:466c6eb4c825428c2763e7c116955b9bf2dbff9493bc503fd6859d9582ea6c10
+  recorded_at: "2026-11-03T12:49:38Z"
+  response:
+    answers:
+      incident_type:
+        choice: rate_limit_exceeded
+        confidence: 0.9999993497675116
+        probabilities:
+          application_exception: 6.045340894544893e-10
+          authentication_failure: 7.839717319768624e-9
+          database_connection_exhausted: 6.933086638127861e-8
+          deployment_failure: 1.891419687538587e-9
+          disk_space_full: 2.1432593477754835e-9
+          dns_resolution_failure: 9.184847726828593e-8
+          high_latency_timeout: 3.9278612007365155e-7
+          kubernetes_crashloop: 4.7650363654838657e-8
+          out_of_memory: 3.364738765387898e-10
+          rate_limit_exceeded: 0.9999994039535522
+          tls_certificate_expired: 6.286159370816335e-10
+          upstream_gateway_error: 1.0224918689516471e-8
+        type: choice
+      severity:
+        confidence: 0.9990533598488014
+        legend:
+          "0": P4
+          "1": P3
+          "2": P2
+          "3": P1
+        probabilities:
+          "0": 3.3044722158592776e-7
+          "1": 0.9990565180778503
+          "2": 0.0009399405680596828
+          "3": 3.184567958669504e-6
+        score: 1.0009459529178457
+        type: score
+    model: rachitst/oncall-ai-incident-classifier
+    usage:
+      input_tokens: 824
+      output_tokens: 0
+  rubric: oncall-incident
+  server: http://localhost:8000

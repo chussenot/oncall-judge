@@ -1,0 +1,49 @@
+# Recorded answer for case `deploy-failed-dev`; found by fingerprint.
+apiVersion: jud/v1
+kind: Recording
+metadata:
+  name: deploy-failed-dev
+  minor: 4
+spec:
+  elapsed_ms: 5214
+  fingerprint: sha256:a5352f2e3c378b4020a01f1cfa62d483b8176c5ab5d3ef264e4b47e401d718e9
+  recorded_at: "2026-11-03T12:49:48Z"
+  response:
+    answers:
+      incident_type:
+        choice: deployment_failure
+        confidence: 0.9996733231977983
+        probabilities:
+          application_exception: 1.1516937092892476e-7
+          authentication_failure: 2.9286126856931105e-9
+          database_connection_exhausted: 2.4330150338869316e-8
+          deployment_failure: 0.9997005462646484
+          disk_space_full: 7.853868311258339e-8
+          dns_resolution_failure: 3.339549948577769e-6
+          high_latency_timeout: 4.2945265121829834e-9
+          kubernetes_crashloop: 0.0002959560661111027
+          out_of_memory: 9.637257658567933e-11
+          rate_limit_exceeded: 8.724860278697122e-10
+          tls_certificate_expired: 7.176874095016217e-10
+          upstream_gateway_error: 8.149579677763086e-9
+        type: choice
+      severity:
+        confidence: 0.6172677666763775
+        legend:
+          "0": P4
+          "1": P3
+          "2": P2
+          "3": P1
+        probabilities:
+          "0": 0.3455597758293152
+          "1": 0.6355817317962646
+          "2": 0.0005444607813842595
+          "3": 0.018313998356461525
+        score: 0.6916126484284177
+        type: score
+    model: rachitst/oncall-ai-incident-classifier
+    usage:
+      input_tokens: 842
+      output_tokens: 0
+  rubric: oncall-incident
+  server: http://localhost:8000
